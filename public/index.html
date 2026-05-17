@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Egoist Soccer Training Tracker (E.S.T) - Football Training Management"
+    />
+    <title>Egoist Soccer Training Tracker (E.S.T)</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+          'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #fff;
+      }
+      #root {
+        width: 100%;
+        height: 100vh;
+      }
+      .navbar {
+        background: linear-gradient(90deg, #0f3460 0%, #1a5f7a 100%);
+        border-bottom: 3px solid #00d4ff;
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+      }
+      .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .navbar-logo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      .navbar-logo h1 {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #00d4ff;
+        letter-spacing: 2px;
+      }
+      .navbar-logo p {
+        font-size: 0.75rem;
+        color: #a0a0a0;
+        letter-spacing: 1px;
+      }
+      .navbar-menu {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .nav-item {
+        background: rgba(0, 212, 255, 0.1);
+        border: 2px solid transparent;
+        color: #a0a0a0;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      .nav-item:hover {
+        background: rgba(0, 212, 255, 0.2);
+        color: #00d4ff;
+        border-color: #00d4ff;
+      }
+      .nav-item.active {
+        background: #00d4ff;
+        color: #0f3460;
+        border-color: #00d4ff;
+      }
+      .navbar-player {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.25rem;
+      }
+      .player-name {
+        font-weight: bold;
+        color: #00d4ff;
+        font-size: 0.9rem;
+      }
+      .player-position {
+        font-size: 0.75rem;
+        color: #a0a0a0;
+      }
+      .page-container {
+        overflow-y: auto;
+        height: calc(100vh - 80px);
+        padding: 2rem;
+      }
+      .dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+      .player-card {
+        background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+        border: 2px solid rgba(0, 212, 255, 0.3);
+        border-radius: 12px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+      .player-card:hover {
+        border-color: #00d4ff;
+        box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+        transform: translateY(-5px);
+      }
+      .player-card img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+        border: 3px solid #00d4ff;
+        object-fit: cover;
+      }
+      .player-card h3 {
+        color: #00d4ff;
+        margin-bottom: 0.5rem;
+      }
+      .player-card p {
+        color: #a0a0a0;
+        font-size: 0.9rem;
+        margin: 0.25rem 0;
+      }
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      .form-group label {
+        display: block;
+        color: #00d4ff;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        background: rgba(0, 0, 0, 0.3);
+        border: 2px solid rgba(0, 212, 255, 0.3);
+        border-radius: 6px;
+        color: #fff;
+        font-size: 1rem;
+      }
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #00d4ff;
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+      }
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: #666;
+      }
+      .btn {
+        padding: 0.8rem 1.5rem;
+        background: linear-gradient(90deg, #00d4ff 0%, #0099cc 100%);
+        color: #0f3460;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
+      }
+      .btn-secondary {
+        background: rgba(0, 212, 255, 0.2);
+        color: #00d4ff;
+        border: 2px solid #00d4ff;
+      }
+      .btn-secondary:hover {
+        background: rgba(0, 212, 255, 0.3);
+      }
+      .btn-danger {
+        background: rgba(255, 0, 0, 0.3);
+        color: #ff6b6b;
+        border: 2px solid #ff6b6b;
+      }
+      .btn-danger:hover {
+        background: rgba(255, 0, 0, 0.4);
+      }
+      .exercise-card {
+        background: rgba(0, 212, 255, 0.1);
+        border: 2px solid rgba(0, 212, 255, 0.3);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+        color: #000;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-right: 0.5rem;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      .stat-card {
+        background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+        border: 2px solid rgba(0, 212, 255, 0.3);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .stat-card h4 {
+        color: #a0a0a0;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+      .stat-card .value {
+        font-size: 2rem;
+        font-weight: 900;
+        color: #00d4ff;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
